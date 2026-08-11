@@ -24,4 +24,5 @@
 | Check | Result |
 |---|---|
 | Row count | 3,167 |
+| Fully duplicate rows | None |
 
