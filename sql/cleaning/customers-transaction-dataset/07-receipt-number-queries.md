@@ -28,3 +28,13 @@ Result:
 |                    18 |         1 |
 |                    19 |         1 |
 |                    36 |         1 |
+
+```sql
+-- Check if the long receipt numbers are associated with a certain branch
+SELECT LENGTH(receipt_number) AS receipt_number_length, branch, retailer
+FROM ftw.default.transactions
+WHERE receipt_number IS NOT NULL
+GROUP BY branch, receipt_number_length, retailer
+ORDER BY branch
+```
+
