@@ -106,3 +106,40 @@ Result:
 | `10/11/2024 8:13`  | `2024-10-11T08:13:00.000+00:00` |
 | `10/09/2024 15:43` | `2024-10-09T15:43:00.000+00:00` |
 
+
+
+
+```sql
+-- 5. Create a receipt_date_clean column
+ALTER TABLE ftw.default.transactions
+ADD COLUMNS (receipt_date_clean TIMESTAMP);
+```
+
+
+Result:
+
+#### OK:
+
+```sql
+-- Update the values
+
+UPDATE ftw.default.transactions
+SET receipt_date_clean =
+    CASE
+        WHEN receipt_date RLIKE '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+            THEN try_to_timestamp(receipt_date, 'yyyy-MM-dd H:mm:ss')
+
+        WHEN receipt_date RLIKE '^[0-9]{2}/[0-9]{2}/[0-9]{4}'
+            THEN try_to_timestamp(receipt_date, 'MM/dd/yyyy H:mm')
+
+        ELSE NULL
+    END
+WHERE receipt_date IS NOT NULL;
+```
+
+
+Result:
+
+|num_affected_rows|
+|-----------------|
+|3167|
