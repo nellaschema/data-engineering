@@ -1,31 +1,37 @@
-## Organizing data in Databricks involves two separate layers: **where the raw files are stored** and **where the processed data is stored**.
-### 1. Volumes = raw files
 
-A Databricks volume can be used to store source files such as CSVs.
-
-Instead of putting every file into one folder, organize them by dataset:
+## Databricks uses the following hierarchy:
 
 ```text
-raw_files/
-├── customers/
-│   ├── customers_01.csv
-│   └── customers_02.csv
-├── transactions/
-│   ├── transactions_01.csv
-│   └── transactions_02.csv
-└── products/
-    ├── products_01.csv
-    └── products_02.csv
+Catalog
+└── Schema
+    ├── Tables
+    ├── Views
+    └── Volumes
 ```
 
-This is useful for automation because the file path can help determine which ingestion or transformation logic should process a file.
+A Volume is a Unity Catalog object that belongs to a schema.
 
-### 2. Catalogs and schemas = processed data
+## Organizing Raw Files
 
-A typical medallion architecture:
+Use a Volume to store source files such as CSVs. For multiple datasets, organize the files into separate folders:
 
 ```text
-Catalog: ftw_project
+ftw_project
+└── raw
+    └── source_files (Volume)
+        ├── customers/
+        ├── transactions/
+        └── products/
+```
+
+## Medallion Architecture
+
+Use separate schemas for the Bronze, Silver, and Gold layers:
+
+```text
+ftw_project
+├── raw
+│   └── source_files (Volume)
 ├── bronze
 │   ├── customers
 │   ├── transactions
@@ -35,68 +41,37 @@ Catalog: ftw_project
 │   ├── transactions
 │   └── products
 └── gold
-    ├── sales_summary
-    └── customer_summary
+    └── dashboard_data
 ```
 
-The different datasets do not need separate Bronze, Silver, and Gold schemas. They can have different columns and still exist as separate tables within the same schema.
+Different datasets can have different columns and still belong to the same schema. Each dataset is represented as its own table.
 
-### 3. The overall flow is:
+## Key Takeaway
+
+> **Catalog** → top-level organization
+
+> **Schema** → organizes tables, views, and volumes
+
+> **Volume** → stores source files
+
+> **Table** → stores structured data
+
+> **Notebook** → contains transformation logic
+
+> **Pipeline** → defines the data-processing flow
+
+> **Job** → orchestrates and schedules the work
+
+The overall flow is:
 
 ```text
-Volume
-  ↓
-Raw CSV files
-  ↓
-Bronze tables
-  ↓
-Silver tables
-  ↓
-Gold tables
-  ↓
-Dashboard
+Raw files in Volume
+        ↓
+     Bronze
+        ↓
+     Silver
+        ↓
+      Gold
+        ↓
+    Dashboard
 ```
-
-For example:
-
-```text
-Volume/customers/*.csv
-          ↓
-    bronze.customers
-          ↓
-    silver.customers
-          ↓
- gold.customer_summary
-```
-
-The transformation logic explicitly defines which files or tables it works with. Databricks does not automatically know that a particular CSV belongs to a particular transformation.
-
-This is why organizing raw files into dataset-specific folders is important **when building an automated pipeline**.
-
-### 4. Automation
-
-A **Job*** can orchestrate the transformations:
-
-```text
-JOB
-├── customers Bronze → Silver
-├── transactions Bronze → Silver
-├── products Bronze → Silver
-└── Silver → Gold
-```
-
-The Job can then be scheduled or configured with an appropriate trigger.
-
-### Key takeaway
-
-The simplest mental model is:
-
-> **Volume = where the raw files live**
-
-> **Catalog/schema/table = where the processed data lives**
-
-> **Notebook = what transformation happens**
-
-> **Pipeline = the data-processing flow**
-
-> **Job = what orchestrates and schedules the work**
