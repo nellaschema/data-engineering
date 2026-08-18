@@ -9,11 +9,7 @@ Catalog
     └── Volumes
 ```
 
-A Volume is a Unity Catalog object that belongs to a schema.
-
-## Organizing Raw Files
-
-Use a Volume to store source files such as CSVs. For multiple datasets, organize the files into separate folders:
+A Volume is a Unity Catalog object that belongs to a schema. We can use this to store source files such as CSVs. For multiple datasets, we can organize the files into separate folders:
 
 ```text
 ftw_project
