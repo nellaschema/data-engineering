@@ -87,7 +87,7 @@ COPY INTO
 → load additional files into an existing Bronze table
 ```
 
-For example, if We later add:
+For example, if later we add:
 
 ```text
 retail_customers/
@@ -96,7 +96,7 @@ retail_customers/
 └── customers_march.csv
 ```
 
-I can run the same `COPY INTO` statement again to ingest the new file.
+We can run the same `COPY INTO` statement again to ingest the new file.
 
 ## Automation
 
@@ -120,7 +120,7 @@ New CSV added to Volume
    Silver → Gold
 ```
 
-The **notebook contains the instructions**, while the **Job controls when those instructions run**.
+Takeaway: The **notebook contains the instructions**, while the **Job controls when those instructions run**.
 
 ## Notebook Structure
 
