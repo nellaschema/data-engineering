@@ -1,4 +1,4 @@
-# Alternative / more intuitive way of automating data cleaning up to the gold layer involves creating multiple tasks in `Jobs and Pipelines` uisng Notebooks.
+# Automating data cleaning up to the gold layer involves creating multiple tasks in `Jobs and Pipelines` uisng Notebooks.
 
 
 ## Create a Job
