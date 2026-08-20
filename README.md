@@ -207,10 +207,10 @@ Current notebook structure:
 ```text
 notebooks/
 │
-├── data_ingestion_customers
-├── data_ingestion_transactions
-├── retail_bronze_to_silver
-└── retail_silver_to_gold
+├── 01_retail_ingestion_customers
+├── 02_retail_ingestion_transactions
+├── 03_retail_bronze_to_silver
+└── 04_retail_silver_to_gold
 ```
 
 The exact notebook structure may change as the pipeline becomes more automated.
