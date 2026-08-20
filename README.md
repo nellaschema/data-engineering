@@ -305,7 +305,6 @@ This project is helping me practice:
 - Delta tables
 - `COPY INTO`
 - Temporary views
-- CTEs
 - Window functions
 - `MERGE INTO`
 - Data cleaning
