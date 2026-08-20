@@ -22,7 +22,7 @@ ftw_project
 
 `Run if dependencies`: all notebooks must be set to "All succeeded" because we want to make sure that all new data are ingested and cleaned properly before the next set of notebooks run.
 
-# Automating a dashboard - this is not necessary but why not
+# Automating a dashboard
 
 ```text
 01. take the gold table
