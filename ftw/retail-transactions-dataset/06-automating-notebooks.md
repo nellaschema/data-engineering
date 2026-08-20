@@ -1,7 +1,7 @@
 # Alternative / more intuitive way of automating data cleaning up to the gold layer involves creating multiple tasks in `Jobs and Pipelines` uisng Notebooks.
 
 
-## Step 01. Create a Job
+## Create a Job
 
 ```text
 -- Create one job and consolidate all notebooks.
@@ -55,10 +55,14 @@ Reading the notebook source to see the exact SQL in each cell
 Observing that Cell 1 describes the CSV as having user_id: int, Cell 2 creates the table with inferSchema => true (preserving that int type), but Cell 3's COPY INTO lacks schema inference
 ```
 
-```text
-Proposed Fix
-Update Cell 3 to include schema inference in the COPY INTO command:
-```
+
+
+### Tried running it again: 
+Several failed runs were all about syntax. Genie helped point them out and I just corrected it.
+
+**FIX**
+Update Cell 3 of `01_retail_ingestion_customers` to include schema inference in the COPY INTO command:
+
 
 ```sql
 -- NEW CSV file ingestion 
@@ -71,4 +75,28 @@ FORMAT_OPTIONS (
 );
 ```
 
-### Tried running it again: several failed runs but it was all about syntax. genie helped point them out and I just corrected it.
+Update Cell 3 of `02_silver_to_gold` to include schema inference in the COPY INTO command:
+
+
+```sql
+-- NEW CSV file ingestion 
+COPY INTO ftw.`02_bronze`.retail_transactions
+FROM '/Volumes/ftw/01_source_files/retail_transactions'
+FILEFORMAT = CSV
+FORMAT_OPTIONS (
+    'header' = 'true',
+    'inferSchema' = 'true'
+);
+```
+
+Update Cell 4 of `04_silver_to_gold`:
+
+
+```sql
+-- Row count check
+
+SELECT COUNT(*) AS customers_gold_row_count,
+       COUNT(DISTINCT user_id) AS distinct_customers
+FROM ftw.`04_gold`.retail_customers_gold;
+```
+
