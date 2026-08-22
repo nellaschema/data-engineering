@@ -5,12 +5,18 @@
 Our Bronze ingestion notebook already uses `COPY INTO`, so the Bronze part of the pipeline does not need to change.
 
 ```sql
+-- NEW CSV file ingestion 
+-- COPY INTO tracks processed files automatically to prevent duplicates
 COPY INTO ftw.`02_bronze`.retail_customers
 FROM '/Volumes/ftw/01_source_files/retail_customers'
 FILEFORMAT = CSV
 FORMAT_OPTIONS (
-    'header' = 'true'
-);
+    'header' = 'true',
+    'inferSchema' = 'true'
+)
+COPY_OPTIONS (
+    'force' = 'false'  -- Only ingest files not previously processed
+);``
 ```
 
 This is appropriate for the **new-file ingestion** part of the pipeline.
@@ -79,7 +85,7 @@ GOLD
 Dashboard
 ```
 
-## Questions for the Instructors
+## Questions for the Instructor
 
 ### 1. Bronze and COPY INTO
 
@@ -162,4 +168,4 @@ File-level incremental ingestion
 Record-level upsert
 ```
 
-Our current understanding is that `COPY INTO` solves the first problem, while something such as `MERGE INTO` may be needed for the second. We would like to confirm whether this is the appropriate design for our project.
+Our current understanding is that `COPY INTO` solves the first problem, while something such as `MERGE INTO` may be needed for the second. We would like to confirm whether this is the appropriate design for this project.
