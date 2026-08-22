@@ -38,3 +38,15 @@ SELECT COUNT(*) AS customers_gold_row_count,
 FROM ftw.`04_gold`.retail_customers_gold;
 ```
 
+### 03. Update cell 4 of 02_retail_ingest_transactions
+-- COPY INTO tracks processed files automatically to prevent duplicates
+COPY INTO ftw.`02_bronze`.retail_customers
+FROM '/Volumes/ftw/01_source_files/retail_customers'
+FILEFORMAT = CSV
+FORMAT_OPTIONS (
+    'header' = 'true',
+    'inferSchema' = 'true'
+)
+COPY_OPTIONS (
+    'force' = 'false'  -- Only ingest files not previously processed
+);```
