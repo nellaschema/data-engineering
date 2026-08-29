@@ -1,6 +1,6 @@
 # Becoming a Data Engineer
 
-Hi, I'm Nella, a chemist currently working at UP-NIH's Institue of Human Genetics.
+Hi, I'm Nella, I'm currently working as a chemist.
 
 In July 2026, I started my journey toward becoming a data engineer through the FTW Foundation Data Engineering program. This repository documents what I learn along the way through FTW sessions, DataCamp courses, hands-on exercises, and projects.
 
