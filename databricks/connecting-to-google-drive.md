@@ -1,1 +1,0 @@
-#### In order to connect Databricks to Google Drive for data ingestion of CSV files, go to `Data Ingestion` under Data Engineering. Find `Google Drive` under Databricks Connector, connect your preferred google account and set permissions.
