@@ -2,6 +2,30 @@
 
 **Topic:** Data Ingestion, Incremental Processing, Data Volatility, APIs, and Web Scraping
 
+## Table of Contents
+
+- [What I Learned](#what-i-learned)
+- [Batch vs Streaming](#batch-vs-streaming)
+- [Incremental Loading](#incremental-loading)
+- [Append, Overwrite, and MERGE](#append-overwrite-and-merge)
+- [Data Volatility and CDC](#data-volatility-and-cdc)
+- [Idempotency and Deduplication](#idempotency-and-deduplication)
+- [Late-Arriving Data](#late-arriving-data)
+- [Data Sources](#data-sources)
+  - [Files](#files)
+  - [Databases](#databases)
+  - [APIs](#apis)
+  - [Websites and Web Scraping](#websites-and-web-scraping)
+- [API Practice in Databricks](#api-practice-in-databricks)
+- [Data Provenance](#data-provenance)
+- [Schema Drift](#schema-drift)
+- [Understanding APIs Through Browser Developer Tools](#understanding-apis-through-browser-developer-tools)
+- [Web Scraping Is Fragile](#web-scraping-is-fragile)
+- [Key Mental Model](#key-mental-model)
+- [NYC Mobility Assignment](#nyc-mobility-assignment)
+- [What I Want to Practice Next](#what-i-want-to-practice-next)
+- [Key Takeaways](#key-takeaways)
+
 ## What I Learned
 
 This week focused on a part of data engineering that I had previously thought of mostly as "getting data into a table." I learned that ingestion is more complicated because data is continuously changing, arriving at different times, and coming from different types of sources.
@@ -63,16 +87,6 @@ What have I already processed?
 Process only new or changed data
 ```
 
-For example, a database could use an `updated_at` column:
-
-```sql
-SELECT *
-FROM orders
-WHERE updated_at > last_processed;
-```
-
-This is more efficient than repeatedly querying the entire database.
-
 ---
 
 ## 3. Append, Overwrite, and MERGE
@@ -85,9 +99,7 @@ We discussed different ways of loading data:
 | `OVERWRITE`  | Replaces existing rows                           |
 | `MERGE INTO` | Updates existing records and inserts new records |
 
-`MERGE INTO` is particularly useful when the incoming data can contain both new and changed records. This is commonly referred to as an **upsert**.
-
-This connected with what I learned about incremental pipelines because loading data is not only about getting new rows into a table. The pipeline also needs to determine how changes should be applied.
+`MERGE INTO` is particularly useful when the incoming data can contain both new and changed records (**upsert**).
 
 ---
 
@@ -116,8 +128,6 @@ The distinction I learned was:
 
 > SCD asks: "How should we preserve that change?"
 
-This helped me separate the process of detecting a change from the decision about how that change should be represented in the data warehouse.
-
 ---
 
 ## 5. Idempotency and Deduplication
@@ -136,11 +146,11 @@ Run it again
 Same intended result
 ```
 
-This is important because pipelines may need to be rerun after failures.
+Because pipelines may need to be rerun after failures.
 
-Deduplication is also important because the same batch or records may be received more than once.
+`Deduplication` is also important because the same batch or records may be received more than once.
 
-This made me realize that "the pipeline ran successfully" does not necessarily mean the resulting data is correct.
+> "the pipeline ran successfully" does not necessarily mean the resulting data is `correct`.
 
 ---
 
@@ -264,20 +274,6 @@ Real APIs may also introduce additional challenges:
 * Errors
 * Timeouts
 
-### Pagination
-
-Sometimes one API request is not enough to retrieve all available records.
-
-For example:
-
-```text
-Page 1 → 100 records
-Page 2 → 100 records
-Page 3 → 100 records
-```
-
-Pagination therefore becomes a form of incremental ingestion within an API.
-
 When building an API pipeline, I also need to consider:
 
 > Where am I, and what happens if one request fails?
@@ -307,7 +303,7 @@ import pandas as pd
 import requests
 ```
 
-I generated ingestion metadata:
+generate ingestion metadata:
 
 ```python
 source_system = "open_meteo_historical_weather_api"
@@ -315,21 +311,21 @@ batch_id = str(uuid.uuid4())
 ingested_at = datetime.now(timezone.utc)
 ```
 
-I then defined the seven-day window:
+define the 7-day window:
 
 ```python
 end_date = datetime.now().date() - timedelta(days=1)
 start_date = end_date - timedelta(days=6)
 ```
 
-The API response was converted into a Pandas DataFrame:
+convert API response into a pandas df:
 
 ```python
 data = response.json()
 weather_df = pd.DataFrame(data["hourly"])
 ```
 
-I added metadata to the Bronze data:
+add metadata to the bronze data:
 
 ```python
 weather_df["source_system"] = source_system
@@ -340,7 +336,7 @@ weather_df["latitude"] = data["latitude"]
 weather_df["longitude"] = data["longitude"]
 ```
 
-Then I converted it into a Spark DataFrame and appended it to a Delta table:
+convert to Spark df and append it to a delta table:
 
 ```python
 spark_df = spark.createDataFrame(weather_df)
@@ -353,13 +349,13 @@ spark_df = spark.createDataFrame(weather_df)
 )
 ```
 
-This was useful because it showed me how an external API can become another data source for a data engineering pipeline.
+This was useful because it showed me how `an external API` can become another `data source` for a data engineering pipeline.
 
 ---
 
 # 11. Data Provenance
 
-One of the concepts I found important was **data provenance**.
+One of the new concepts was **data provenance**.
 
 For external data, we should capture metadata such as:
 
@@ -447,7 +443,7 @@ response = requests.get(url)
 html = response.text
 ```
 
-I then used BeautifulSoup to parse the HTML:
+use BeautifulSoup to parse the HTML:
 
 ```python
 from bs4 import BeautifulSoup
@@ -557,7 +553,6 @@ This will require applying the ingestion concepts discussed during the session, 
 For the next stage, I want to become more comfortable with:
 
 * Incremental API ingestion
-* Pagination
 * Handling API failures
 * Deduplication
 * Idempotent pipelines
