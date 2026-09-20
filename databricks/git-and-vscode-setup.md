@@ -1,4 +1,4 @@
-# TIL: Git & VS Code Workflow for Batchmates
+# TIL: Git and VS Code Workflow
 
 If you're new to Git, this is the basic workflow I use when working with GitHub through VS Code. The first time you see all these commands, they can look like a lot, but they follow a pretty straightforward sequence.
 
