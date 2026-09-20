@@ -1,4 +1,4 @@
-# TIL: Git and VS Code Workflow
+Git and VS Code Workflow
 
 This is a basic workflow we can use when working with GitHub through VS Code. The sequence is pretty straightforward:
 
