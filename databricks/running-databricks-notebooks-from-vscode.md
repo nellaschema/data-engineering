@@ -168,7 +168,7 @@ Go back to the **Databricks extension**.
 
 You should now be able to access the Databricks workspace through VS Code.
 
-At this point, however, there is an important distinction:
+At this point, however:
 
 > Being connected to the Databricks workspace does not automatically mean that the notebook is ready to execute SQL.
 
@@ -218,14 +218,11 @@ Copy the server hostname and put it into the **Host** field in VS Code.
 
 Copy the HTTP path and put it into the **HTTP Path** field.
 
-The important distinction is:
 
 ```text
 Host
 HTTP Path
 ```
-
-These are two separate pieces of connection information.
 
 ---
 
@@ -249,14 +246,14 @@ Enter something that tells you what the token is for.
 For example:
 
 ```text
-VS Code SQL Tools
+VSCode
 ```
 
 ### Lifetime
 
 Choose how many days the token should remain valid.
 
-Use a reasonable expiration period based on your project's requirements.
+Use a reasonable expiration period based on your project's requirements (I put 30 days).
 
 ### Scope
 
@@ -305,7 +302,7 @@ Catalog: <your catalog>
 Schema: leave blank
 ```
 
-For my setup, I entered the name of the catalog but did **not** specify a schema.
+For my setup, I entered the name of the catalog but did **not** specify a schema (so that schema access won't be limited).
 
 ---
 
@@ -361,7 +358,7 @@ Output shown in VS Code
 
 There are multiple connections involved.
 
-The Databricks extension lets VS Code communicate with your Databricks workspace.
+The Databricks extension lets VS Code communicate with my Databricks workspace.
 
 The SQL Tools connection provides the SQL connection information needed to execute SQL against Databricks.
 
@@ -407,9 +404,7 @@ Do not put the token in your Git repository.
 
 # What I learned
 
-At first, I thought that connecting the Databricks extension to my workspace would be enough to run everything from VS Code.
-
-It wasn't.
+At first, I thought that connecting the Databricks extension to my workspace would be enough to run everything from VS Code but it wasn't.
 
 There are different pieces involved:
 
@@ -466,13 +461,3 @@ Before troubleshooting, check these one by one:
 [ ] Cell runs successfully
 [ ] Output appears in VS Code
 ```
-
-## The main idea
-
-You are essentially setting up two things:
-
-**1. Databricks Extension → connects VS Code to the Databricks workspace and project.**
-
-**2. SQL Tools → provides the SQL connection to Databricks so the notebook can execute and return results.**
-
-Once both are properly configured, VS Code can become your working interface while Databricks handles the actual execution.
