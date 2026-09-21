@@ -380,7 +380,9 @@ Output shown in VS Code
 
 Here is a video demonstration of the setup and how to run a notebook cell from VS Code.
 
-**Video Demo:** [https://drive.google.com/drive/folders/1o2HR39B_oA4-MGz19eAkXLjInOf3SPWf?usp=sharing]
+## Video Demo
+
+[Watch the video demo](https://drive.google.com/drive/folders/1o2HR39B_oA4-MGz19eAkXLjInOf3SPWf?usp=sharing)
 
 The demo shows the process from connecting VS Code to Databricks, encountering and solving errors, configuring the SQL connection, opening the notebook, running a cell, and viewing the output.
 
