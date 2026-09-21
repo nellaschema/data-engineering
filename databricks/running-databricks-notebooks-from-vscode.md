@@ -8,6 +8,28 @@ This is based on what I actually did and the issues I encountered while setting 
 
 ---
 
+## Table of Contents
+
+1. [What are we trying to do?](#what-are-we-trying-to-do)
+2. [Step 1: Install the required VS Code extensions](#step-1-install-the-required-vs-code-extensions)
+3. [Step 2: Open the Databricks extension](#step-2-open-the-databricks-extension)
+4. [Step 3: Connect VS Code to your Databricks workspace](#step-3-connect-vs-code-to-your-databricks-workspace)
+5. [Step 4: Select the Databricks cluster and environment](#step-4-select-the-databricks-cluster-and-environment)
+6. [Step 5: Fix the `databricks.yml`](#step-5-fix-the-databricksyml)
+7. [Step 6: Access the Databricks workspace from VS Code](#step-6-access-the-databricks-workspace-from-vs-code)
+8. [Step 7: Open SQL Tools](#step-7-open-sql-tools)
+9. [Step 8: Get the Databricks Server Hostname and HTTP Path](#step-8-get-the-databricks-server-hostname-and-http-path)
+10. [Step 9: Create an access token](#step-9-create-an-access-token)
+11. [Step 10: Put the credentials into the SQL Tools connection](#step-10-put-the-credentials-into-the-sql-tools-connection)
+12. [Step 11: Test the connection](#step-11-test-the-connection)
+13. [Step 12: Run the notebook](#step-12-run-the-notebook)
+14. [Video Demo](#video-demo)
+15. [Troubleshooting](#troubleshooting)
+16. [What I learned](#what-i-learned)
+17. [Quick Setup Checklist](#quick-setup-checklist)
+
+---
+
 ## What are we trying to do?
 
 The goal is to use **VS Code as the interface for working with a Databricks notebook**.
@@ -20,8 +42,7 @@ Instead of opening the notebook only in the Databricks workspace, we want to be 
 4. Run a cell from VS Code.
 5. See the output directly in VS Code.
 
-<img width="1917" height="1078" alt="image" src="https://github.com/user-attachments/assets/6a7d1522-17ed-4f7a-b79f-2defad6e15f6" />
-
+<img width="1917" height="1078" alt="Databricks notebook running in VS Code" src="https://github.com/user-attachments/assets/6a7d1522-17ed-4f7a-b79f-2defad6e15f6" />
 
 There are a few different things involved, so the setup can feel confusing at first.
 
@@ -35,19 +56,19 @@ Install these three extensions:
 
 ### 1. Databricks: IDE support for Databricks
 
-<img width="1245" height="437" alt="image" src="https://github.com/user-attachments/assets/cf1d1d46-18d1-402a-a869-60aae6875d27" />
+<img width="1245" height="437" alt="Databricks IDE support extension" src="https://github.com/user-attachments/assets/cf1d1d46-18d1-402a-a869-60aae6875d27" />
 
 This is what allows VS Code to connect to and work with your Databricks workspace.
 
 ### 2. Databricks Driver for SQL Tools
 
-<img width="1251" height="552" alt="image" src="https://github.com/user-attachments/assets/7d6de054-1d7c-42d1-b632-433673d33b60" />
+<img width="1251" height="552" alt="Databricks Driver for SQL Tools extension" src="https://github.com/user-attachments/assets/7d6de054-1d7c-42d1-b632-433673d33b60" />
 
 We will use this later to create a SQL connection to Databricks.
 
 ### 3. GitHub Actions
 
-<img width="1255" height="405" alt="image" src="https://github.com/user-attachments/assets/3fe92abe-fd1a-426b-a132-34a762fe3e2a" />
+<img width="1255" height="405" alt="GitHub Actions extension" src="https://github.com/user-attachments/assets/3fe92abe-fd1a-426b-a132-34a762fe3e2a" />
 
 This is useful if your project uses GitHub Actions for CI/CD.
 
@@ -218,17 +239,18 @@ Copy the server hostname and put it into the **Host** field in VS Code.
 
 Copy the HTTP path and put it into the **HTTP Path** field.
 
-
 ```text
 Host
 HTTP Path
 ```
 
+These are two separate pieces of connection information.
+
 ---
 
 # Step 9: Create an access token
 
-For the authentication, create a Databricks personal access token.
+For authentication, create a Databricks personal access token.
 
 In Databricks:
 
@@ -253,7 +275,9 @@ VSCode
 
 Choose how many days the token should remain valid.
 
-Use a reasonable expiration period based on your project's requirements (I put 30 days).
+Use a reasonable expiration period based on your project's requirements.
+
+For my setup, I used **30 days**.
 
 ### Scope
 
@@ -302,7 +326,7 @@ Catalog: <your catalog>
 Schema: leave blank
 ```
 
-For my setup, I entered the name of the catalog but did **not** specify a schema (so that schema access won't be limited).
+For my setup, I entered the name of the catalog but did **not** specify a schema so that schema access would not be limited.
 
 ---
 
@@ -352,7 +376,17 @@ Output shown in VS Code
 
 ---
 
-# Troubleshooting: What confused me
+# Video Demo
+
+Here is a video demonstration of the setup and how to run a notebook cell from VS Code.
+
+**Video Demo:** [https://drive.google.com/drive/folders/1o2HR39B_oA4-MGz19eAkXLjInOf3SPWf?usp=sharing]
+
+The demo shows the process from connecting VS Code to Databricks, encountering and solving errors, configuring the SQL connection, opening the notebook, running a cell, and viewing the output.
+
+---
+
+# Troubleshooting
 
 ## "I can access Databricks, but I can't run my notebook."
 
@@ -404,7 +438,7 @@ Do not put the token in your Git repository.
 
 # What I learned
 
-At first, I thought that connecting the Databricks extension to my workspace would be enough to run everything from VS Code but it wasn't.
+At first, I thought that connecting the Databricks extension to my workspace would be enough to run everything from VS Code, but it wasn't.
 
 There are different pieces involved:
 
