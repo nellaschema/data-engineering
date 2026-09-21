@@ -104,7 +104,7 @@ That is why we need **explicit** data-quality checks.
 
 ## Where?
 
-I worked in the **Databricks GX notebook** first for testing.
+I worked in the **Databricks GX notebook** first for testing (See 02-great-expectations-quality-gate.ipynb)
 
 ## What did I change?
 
